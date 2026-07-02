@@ -2,18 +2,20 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Copy and install dependencies
+# Install dependencies first (better caching)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all project files
+# Copy project files
 COPY . .
 
-# CRITICAL: Pre-download the AI model during the build phase 
-# so the server doesn't crash or timeout on startup
-RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
+# Pre-download the SMALLER model
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L3-v2')"
 
-# Expose the port
+# Set memory-efficient environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
 EXPOSE 8000
 
 # Start the server
