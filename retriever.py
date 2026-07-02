@@ -6,7 +6,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 class CatalogRetriever:
-    def __init__(self, catalog_path="catalog.json", model_name="all-MiniLM-L6-v2"):
+    def __init__(self, catalog_path="catalog.json", model_name="paraphrase-MiniLM-L3-v2"):
         print("Loading embedding model...")
         self.model = SentenceTransformer(model_name)
         with open(catalog_path, encoding="utf-8") as f:
